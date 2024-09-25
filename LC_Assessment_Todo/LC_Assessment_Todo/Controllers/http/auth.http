@@ -1,0 +1,5 @@
+GET http://localhost:5013/weatherforecast
+
+###
+
+POST https://localhost:7114/auth/login

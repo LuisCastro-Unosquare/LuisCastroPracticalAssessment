@@ -11,6 +11,9 @@ namespace LC_Assessment_Todo.Controllers
         [HttpPost]
         public IActionResult Create([FromBody]TaskDto task, [FromServices] ITaskService taskService)
         {
+            if (task == null)
+                return BadRequest();
+
             var createdTask = taskService.Create(task);
             if (createdTask != null)
             {

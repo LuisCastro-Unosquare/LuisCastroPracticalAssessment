@@ -1,16 +1,25 @@
+using LC_Assessment_Todo.Context;
 using LC_Assessment_Todo.Services;
 using LC_Assessment_Todo.Services.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Configuration;
 using System.Text;
+
+// CONSTANTS
+const string CONNECTION_STRING_NAME = "TodoDbConnection";
+const string JWT_KEY = "77c5790c-207f-41cf-99bf-7b533a95e701";
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+
+builder.Services.AddDbContext<TodoDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString(CONNECTION_STRING_NAME)));
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
+
+builder.Services.AddControllers();
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -24,28 +33,13 @@ builder.Services.AddAuthentication(options =>
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8
-                .GetBytes("77c5790c-207f-41cf-99bf-7b533a95e701")
+                .GetBytes(JWT_KEY)
             ),
             ValidateIssuer = false,
             ValidateAudience = false,
             ClockSkew = TimeSpan.Zero
         };
     });
-/*
- * AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-    {
-        //ValidateIssuer = true,
-        //ValidateAudience = true,
-        ValidateLifetime = true,
-        //ValidateIssuerSigningKey = true,
-        //ValidIssuer = Configuration["Jwt:Issuer"],
-        //ValidAudience = Configuration["Jwt:Issuer"],
-        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-    };
-});
-*/
 
 var app = builder.Build();
 app.UseAuthentication();

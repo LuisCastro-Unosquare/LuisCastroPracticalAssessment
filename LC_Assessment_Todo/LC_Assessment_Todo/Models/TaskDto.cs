@@ -11,6 +11,6 @@ namespace LC_Assessment_Todo.Models
         public string Title { get; set; }
 
         [DefaultValue(false)]
-        public string IsDone { get; set; }
+        public bool IsDone { get; set; }
     }
 }
