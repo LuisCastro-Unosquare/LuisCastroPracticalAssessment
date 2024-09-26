@@ -1,4 +1,5 @@
-﻿using LC_Assessment_Todo.Context;
+﻿using AutoMapper;
+using LC_Assessment_Todo.Context;
 using LC_Assessment_Todo.Models;
 using LC_Assessment_Todo.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -11,14 +12,16 @@ namespace LC_Assessment_Todo.Services.Implementations
     public class TaskService : ITaskService
     {
         private TodoDbContext _todoDbContext;
+        private IMapper _mapper;
 
         /// <summary>
         /// Initialices the service, injecting <see cref="TodoDbContext"/>
         /// </summary>
         /// <param name="todoDbContext"></param>
-        public TaskService([FromServices] TodoDbContext todoDbContext)
+        public TaskService([FromServices] TodoDbContext todoDbContext, [FromServices] IMapper mapper)
         {
             _todoDbContext = todoDbContext;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -55,12 +58,7 @@ namespace LC_Assessment_Todo.Services.Implementations
             _todoDbContext.Tasks.Remove(taskEntity);
             _todoDbContext.SaveChanges();
 
-            return new TaskDto()
-            {
-                Id = taskEntity.Id,
-                Title = taskEntity.Title,
-                IsDone = taskEntity.IsDone
-            };
+            return _mapper.Map<TaskDto>(taskEntity);
         }
 
         /// <summary>
@@ -70,12 +68,8 @@ namespace LC_Assessment_Todo.Services.Implementations
         /// <returns></returns>
         public TaskDto Create(TaskDto taskDto)
         {
-            var newTodoTaskRecord = new TodoTask()
-            {
-                Title = taskDto.Title,
-                IsDone = taskDto.IsDone
-            };
-
+            var newTodoTaskRecord = _mapper.Map<TodoTask>(taskDto);
+            
             _todoDbContext.Tasks.Add(newTodoTaskRecord);
             
             if(_todoDbContext.SaveChanges() == 1)
@@ -96,8 +90,10 @@ namespace LC_Assessment_Todo.Services.Implementations
 
             var taskEntity = _todoDbContext.Tasks.FirstOrDefault(x => x.Id == taskDto.Id);
 
-            taskEntity.Title = taskDto.Title;
-            taskEntity.IsDone = taskDto.IsDone;
+            if (taskEntity == null)
+                return null;
+
+            taskEntity = _mapper.Map<TodoTask>(taskDto);
 
             _todoDbContext.Update(taskEntity);
 
@@ -120,8 +116,7 @@ namespace LC_Assessment_Todo.Services.Implementations
             var userTasks = _todoDbContext.Tasks.Where(x => x.UserId == userId);
 
             if (userTasks.Any()) {
-                // TODO: Map list DTO
-                return new List<TaskDto>();
+                return _mapper.Map<List<TaskDto>>(userTasks);
             }
             else
             {

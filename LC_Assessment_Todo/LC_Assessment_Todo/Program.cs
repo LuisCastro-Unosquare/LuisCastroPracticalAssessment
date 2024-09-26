@@ -1,4 +1,5 @@
 using LC_Assessment_Todo.Context;
+using LC_Assessment_Todo.Profiles;
 using LC_Assessment_Todo.Services;
 using LC_Assessment_Todo.Services.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,6 +20,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(typeof(TaskProfile));
 
 builder.Services.AddAuthentication(options =>
     {

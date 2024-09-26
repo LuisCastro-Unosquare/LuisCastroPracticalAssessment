@@ -59,6 +59,20 @@ namespace LC_Assessment_Todo.Controllers
             }
         }
 
+        [HttpGet("list")]
+        public IActionResult List([FromServices] ITaskService taskService)
+        {
+            var tasksDto = taskService.GetTasks(0);
+            if (tasksDto != null)
+            {
+                return this.Ok(tasksDto);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpDelete("{taskId:int}")]
         public IActionResult Delete([FromRoute] int taskId, [FromServices] ITaskService taskService)
         {
