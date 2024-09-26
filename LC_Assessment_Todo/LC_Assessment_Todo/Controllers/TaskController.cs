@@ -1,4 +1,5 @@
-﻿using LC_Assessment_Todo.Models;
+﻿using LC_Assessment_Todo.Constants;
+using LC_Assessment_Todo.Models;
 using LC_Assessment_Todo.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -65,11 +66,11 @@ namespace LC_Assessment_Todo.Controllers
             var tasksDto = taskService.GetTasks(0);
             if (tasksDto != null)
             {
-                return this.Ok(tasksDto);
+                return this.Ok(new Result<List<TaskDto>>(tasksDto));
             }
             else
             {
-                return NotFound();
+                return this.NotFound(new Result<List<TaskDto>>(ErrorConsts.NO_TASK_FOUND_ERROR_MESSAGE));
             }
         }
 
