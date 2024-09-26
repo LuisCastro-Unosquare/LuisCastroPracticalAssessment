@@ -28,7 +28,7 @@ namespace LC_Assessment_Todo.Controllers
         public IActionResult Update([FromBody] TaskDto task, [FromServices] ITaskService taskService)
         {
             if (task == null)
-                return BadRequest();
+                return BadRequest("Task object must be provided");
 
             var updatedTask = taskService.Update(task);
             if (updatedTask != null)
