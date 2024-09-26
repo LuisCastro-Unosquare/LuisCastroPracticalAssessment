@@ -22,6 +22,48 @@ namespace LC_Assessment_Todo.Services.Implementations
         }
 
         /// <summary>
+        /// Gets the task details by task id
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <returns></returns>
+        public TaskDto? GetTaskDetails(int taskId)
+        {
+            var taskEntity = _todoDbContext.Tasks.FirstOrDefault(x => x.Id == taskId);
+
+            if (taskEntity == null)
+                return null;
+
+            return new TaskDto() { 
+                Id = taskEntity.Id,
+                Title = taskEntity.Title,
+                IsDone = taskEntity.IsDone
+            };
+        }
+
+        /// <summary>
+        /// Deletes a task by id
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <returns></returns>
+        public TaskDto? Delete(int taskId)
+        {
+            var taskEntity = _todoDbContext.Tasks.FirstOrDefault(x => x.Id == taskId);
+
+            if (taskEntity == null)
+                return null;
+
+            _todoDbContext.Tasks.Remove(taskEntity);
+            _todoDbContext.SaveChanges();
+
+            return new TaskDto()
+            {
+                Id = taskEntity.Id,
+                Title = taskEntity.Title,
+                IsDone = taskEntity.IsDone
+            };
+        }
+
+        /// <summary>
         /// Create a new <see cref="TodoTask"/> from <see cref="TaskDto"/> and added to the <see cref="TodoDbContext.Tasks"/>
         /// </summary>
         /// <param name="taskDto"></param>
@@ -42,6 +84,49 @@ namespace LC_Assessment_Todo.Services.Implementations
             }
 
             return taskDto;
+        }
+
+        /// <summary>
+        /// Update a task
+        /// </summary>
+        /// <param name="taskDto"></param>
+        /// <returns></returns>
+        public TaskDto Update(TaskDto taskDto)
+        {
+
+            var taskEntity = _todoDbContext.Tasks.FirstOrDefault(x => x.Id == taskDto.Id);
+
+            taskEntity.Title = taskDto.Title;
+            taskEntity.IsDone = taskDto.IsDone;
+
+            _todoDbContext.Update(taskEntity);
+
+            if (_todoDbContext.SaveChanges() != 1)
+            {
+                return null;
+            }
+
+            return taskDto;
+        }
+
+        /// <summary>
+        /// Get the list with all the tasks registered by the user.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public List<TaskDto> GetTasks(int userId)
+        {
+            var userTasks = _todoDbContext.Tasks.Where(x => x.UserId == userId);
+
+            if (userTasks.Any()) {
+                // TODO: Map list DTO
+                return new List<TaskDto>();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

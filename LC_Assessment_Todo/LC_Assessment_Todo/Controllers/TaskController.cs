@@ -23,5 +23,57 @@ namespace LC_Assessment_Todo.Controllers
                 throw new NotImplementedException("TODO implement");
             }
         }
+
+        [HttpPut]
+        public IActionResult Update([FromBody] TaskDto task, [FromServices] ITaskService taskService)
+        {
+            if (task == null)
+                return BadRequest();
+
+            var updatedTask = taskService.Update(task);
+            if (updatedTask != null)
+            {
+                return this.Ok(updatedTask);
+            }
+            else
+            {
+                // TODO: Implement exception handler
+                throw new NotImplementedException("TODO implement");
+            }
+        }
+
+        [HttpGet("{taskId:int}")]
+        public IActionResult Read([FromRoute] int taskId, [FromServices] ITaskService taskService)
+        {
+            if (taskId <= 0)
+                return BadRequest();
+
+            var taskDetailsDto = taskService.GetTaskDetails(taskId);
+            if (taskDetailsDto != null)
+            {
+                return this.Ok(taskDetailsDto);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpDelete("{taskId:int}")]
+        public IActionResult Delete([FromRoute] int taskId, [FromServices] ITaskService taskService)
+        {
+            if (taskId <= 0)
+                return BadRequest();
+
+            var taskDetailsDto = taskService.Delete(taskId);
+            if (taskDetailsDto != null)
+            {
+                return this.Ok(taskDetailsDto);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }
