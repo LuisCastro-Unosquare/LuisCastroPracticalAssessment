@@ -3,6 +3,7 @@ using LC_Assessment_Todo.Models;
 using LC_Assessment_Todo.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace LC_Assessment_Todo.Controllers
 {
@@ -13,14 +14,14 @@ namespace LC_Assessment_Todo.Controllers
         public IActionResult Create([FromBody]TaskDto task, [FromServices] ITaskService taskService)
         {
             if (task == null)
-                return BadRequest();
+                return this.StatusCode((int)HttpStatusCode.BadRequest, new Result<TaskDto>("Bad request"));
 
             var createdTask = taskService.Create(task);
             if (createdTask != null)
             {
                 return this.Ok(new Result<TaskDto>(createdTask));
             } else {
-                return this.BadRequest(new Result<TaskDto>("Not created"));
+                return this.StatusCode((int)HttpStatusCode.InternalServerError, new Result<TaskDto>("Not created"));
             }
         }
 
@@ -37,7 +38,7 @@ namespace LC_Assessment_Todo.Controllers
             }
             else
             {
-                return this.BadRequest(new Result<TaskDto>("Not updated"));
+                return this.StatusCode((int)HttpStatusCode.InternalServerError, new Result<TaskDto>("Not updated"));
             }
         }
 
@@ -50,11 +51,11 @@ namespace LC_Assessment_Todo.Controllers
             var taskDetailsDto = taskService.GetTaskDetails(taskId);
             if (taskDetailsDto != null)
             {
-                return this.Ok(taskDetailsDto);
+                return this.Ok(new Result<TaskDto>(taskDetailsDto));
             }
             else
             {
-                return NotFound();
+                return this.NotFound(new Result<TaskDto>("Task not found"));
             }
         }
 
@@ -68,7 +69,7 @@ namespace LC_Assessment_Todo.Controllers
             }
             else
             {
-                return this.NotFound(new Result<List<TaskDto>>(ErrorConsts.NO_TASK_FOUND_ERROR_MESSAGE));
+                return this.StatusCode((int)HttpStatusCode.InternalServerError, new Result<TaskDto>(ErrorConsts.NO_TASK_FOUND_ERROR_MESSAGE));
             }
         }
 
@@ -81,11 +82,11 @@ namespace LC_Assessment_Todo.Controllers
             var taskDetailsDto = taskService.Delete(taskId);
             if (taskDetailsDto != null)
             {
-                return this.Ok(taskDetailsDto);
+                return this.Ok(new Result<TaskDto>(taskDetailsDto));
             }
             else
             {
-                return NotFound();
+                return this.StatusCode((int)HttpStatusCode.InternalServerError, new Result<TaskDto>("Not deleted"));
             }
         }
     }
