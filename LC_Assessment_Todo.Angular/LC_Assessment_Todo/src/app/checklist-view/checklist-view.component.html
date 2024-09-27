@@ -1,9 +1,8 @@
 <h2>TODO List <i class="bi bi-check2-all"></i></h2>
-<li>
-  <input type="checkbox">
-  Conectar con backend
-</li>
-<li>
-  <input type="checkbox">
-  Instalar bootstrap, pa que se mire bonito
-</li>
+<div class="checklist-panel"
+  *ngIf="tasks() as tasks">
+  <li *ngFor='let task of tasks'>
+    <input type="checkbox">
+    {{task.title}}
+  </li>
+</div>

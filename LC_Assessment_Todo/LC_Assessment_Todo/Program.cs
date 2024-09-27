@@ -10,8 +10,20 @@ using System.Text;
 // CONSTANTS
 const string CONNECTION_STRING_NAME = "TodoDbConnection";
 const string JWT_KEY = "77c5790c-207f-41cf-99bf-7b533a95e701";
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins, policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+            .SetIsOriginAllowedToAllowWildcardSubdomains()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 // Add services to the container.
 
@@ -45,6 +57,9 @@ builder.Services.AddAuthentication(options =>
     });
 
 var app = builder.Build();
+
+app.UseCors(MyAllowSpecificOrigins);
+
 app.UseAuthentication();
 
 // Configure the HTTP request pipeline.

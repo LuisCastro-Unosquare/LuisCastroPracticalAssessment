@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { computed, inject, Injectable } from "@angular/core";
 import { Result } from "../models/result.model";
 import { Task } from "../models/task.model";
-import { catchError, map, of, tap } from "rxjs";
+import { catchError, map, of, shareReplay, tap } from "rxjs";
 import { HttpErrorService } from "./http-error.service";
 import { toSignal } from "@angular/core/rxjs-interop";
 
@@ -14,11 +14,11 @@ export class TaskService {
   private http = inject(HttpClient);
   private errorService = inject(HttpErrorService)
 
-  private tasksResult$ = this.http.get<Task[]>(this.tasksUrl)
+  private tasksResult$ = this.http.get<Result<Task[]>>(this.tasksUrl)
   .pipe(
-    map(p => ({ data:p} as Result<Task[]>)),
+    // map(p => ({ data:p.data} as Result<Task[]>)),
     tap(p => console.log(JSON.stringify(p))),
-    // shareReplay(1),
+    shareReplay(1),
     catchError(
       err => of(({ data: [], error:this.errorService.formatError(err) } as Result<Task[]>))
     )
