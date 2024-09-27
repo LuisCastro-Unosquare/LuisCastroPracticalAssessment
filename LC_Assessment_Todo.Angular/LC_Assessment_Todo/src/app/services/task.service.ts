@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { Result } from "../models/result.model";
 import { Task } from "../models/task.model";
-import { catchError, combineLatest, Observable, of, shareReplay, switchMap, tap } from "rxjs";
+import { BehaviorSubject, catchError, combineLatest, Observable, of, shareReplay, switchMap, tap } from "rxjs";
 import { HttpErrorService } from "./http-error.service";
 import { toSignal } from "@angular/core/rxjs-interop";
 
@@ -25,10 +25,21 @@ export class TaskService {
   private tasksResult = toSignal(this.tasksResult$,
     {initialValue: {data: []} as Result<Task[]>});
 
-  public tasks = computed(() => this.tasksResult().data);
+  private taskListSubject$ = new BehaviorSubject<Task[] | undefined>([]);
+  private rawTaskList = toSignal(this.taskListSubject$, { initialValue: <Task[]>[] });
+  tasks = computed(() => signal(this.rawTaskList()).asReadonly()());
   public tasksError = computed(()=> this.tasksResult().error);
   public isSyncing = signal<boolean>(false);
 
+  getAllTasks():void {
+    this.tasksResult$
+    .pipe(
+      tap(tasks => {
+        this.taskListSubject$.next(tasks.data)
+      })
+    )
+    .subscribe();
+  }
 
   changeTaskTitle(task: Task) {
     this.updateTask(task);
@@ -60,6 +71,7 @@ export class TaskService {
       .pipe(
         tap(p => {
           console.log("Create task response: " + JSON.stringify(p));
+          this.getAllTasks();
           this.setSyncingStateOff();
         }),
         catchError(
