@@ -10,12 +10,13 @@
 .input-title{
   border: none;
   font-weight: bold;
+  background: none;
   &:active{
     border: none;
     outline: none;
   }
   &:disabled{
-    background: #FFF;
+    background: none;
   }
   &:focus-visible{
     outline: none;

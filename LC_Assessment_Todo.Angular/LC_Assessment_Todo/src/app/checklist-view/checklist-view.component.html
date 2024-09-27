@@ -12,20 +12,21 @@
       <input class="form-check-input flex-shrink-0" type="checkbox" value="" [checked]="task.isDone" style="font-size: 1.375em;"
         (change)="onTaskStatusChanged($event, task)">
       <span class="pt-1 form-checked-content task-title">
-        <input type="text" [(value)]="task.title" class="input-title" [disabled]="task.isDone" (keyup.enter)="onTaskTitleChange($event, task)" (blur)="onTaskTitleChange($event, task)">
-        <small class="d-block text-body-secondary">
+        <input type="text" [(value)]="task.title" class="input-title" [disabled]="task.isDone" (keyup.enter)="onTaskTitleChange($event, task)">
+        <!-- <small class="d-block text-body-secondary">
           <i class="bi bi-calendar-event"></i>
           1:00–2:00pm
-        </small>
+        </small> -->
       </span>
     </label>
     <label class="list-group-item d-flex gap-3 bg-body-tertiary">
       <input class="form-check-input form-check-input-placeholder bg-body-tertiary flex-shrink-0 pe-none" disabled="" type="checkbox" value="" style="font-size: 1.375em;">
       <span class="pt-1 form-checked-content">
-        <span contenteditable="true" class="w-100">Add new task...</span>
+        <input type="text" [(value)]="newTask.title" class="input-title" placeholder="Add new task..." (keyup.enter)="onNewTask($event)">
+        <!-- <span contenteditable="true" class="w-100">Add new task...</span> -->
         <small class="d-block text-body-secondary">
           <i class="bi bi-list-check"></i>
-          Choose list...
+          Enter to sync...
         </small>
       </span>
     </label>

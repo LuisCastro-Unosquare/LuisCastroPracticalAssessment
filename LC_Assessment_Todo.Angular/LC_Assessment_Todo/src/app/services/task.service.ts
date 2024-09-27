@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { Result } from "../models/result.model";
 import { Task } from "../models/task.model";
-import { catchError, of, shareReplay, tap } from "rxjs";
+import { catchError, combineLatest, Observable, of, shareReplay, switchMap, tap } from "rxjs";
 import { HttpErrorService } from "./http-error.service";
 import { toSignal } from "@angular/core/rxjs-interop";
 
@@ -17,7 +17,6 @@ export class TaskService {
   private tasksResult$ = this.http.get<Result<Task[]>>(this.tasksUrl + '/list')
   .pipe(
     tap(p => console.log(JSON.stringify(p))),
-    shareReplay(1),
     catchError(
       err => of(({ data: [], error:this.errorService.formatError(err) } as Result<Task[]>))
     )
@@ -53,6 +52,20 @@ export class TaskService {
         )
       )
       .subscribe();
+  }
+
+  public createTask(task: Task): Observable<Result<Task>> {
+    this.setSyncingStateOn();
+    return this.http.post<Result<Task>>(this.tasksUrl, task)
+      .pipe(
+        tap(p => {
+          console.log("Create task response: " + JSON.stringify(p));
+          this.setSyncingStateOff();
+        }),
+        catchError(
+          err => of(({ data: {}, error:this.errorService.formatError(err) } as Result<Task>))
+        )
+      );
   }
 
   private setSyncingStateOn(): void {

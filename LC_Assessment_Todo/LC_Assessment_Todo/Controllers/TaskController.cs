@@ -18,10 +18,9 @@ namespace LC_Assessment_Todo.Controllers
             var createdTask = taskService.Create(task);
             if (createdTask != null)
             {
-                return this.Ok(createdTask);
+                return this.Ok(new Result<TaskDto>(createdTask));
             } else {
-                // TODO: Implement exception handler
-                throw new NotImplementedException("TODO implement");
+                return this.BadRequest(new Result<TaskDto>("Not created"));
             }
         }
 
@@ -38,8 +37,7 @@ namespace LC_Assessment_Todo.Controllers
             }
             else
             {
-                // TODO: Implement exception handler
-                throw new NotImplementedException("TODO implement");
+                return this.BadRequest(new Result<TaskDto>("Not updated"));
             }
         }
 
