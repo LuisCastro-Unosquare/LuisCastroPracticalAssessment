@@ -12,7 +12,7 @@
       <input class="form-check-input flex-shrink-0" type="checkbox" value="" [checked]="task.isDone" style="font-size: 1.375em;"
         (change)="onTaskStatusChanged($event, task)">
       <span class="pt-1 form-checked-content task-title">
-        <input type="text" [value]="task.title" class="input-title" [disabled]="task.isDone" (keyup.enter)="onTaskTitleChange($event, task)" (blur)="onTaskTitleChange($event, task)">
+        <input type="text" [(value)]="task.title" class="input-title" [disabled]="task.isDone" (keyup.enter)="onTaskTitleChange($event, task)" (blur)="onTaskTitleChange($event, task)">
         <small class="d-block text-body-secondary">
           <i class="bi bi-calendar-event"></i>
           1:00–2:00pm

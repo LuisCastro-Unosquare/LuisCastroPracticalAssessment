@@ -17,4 +17,7 @@
   &:disabled{
     background: #FFF;
   }
+  &:focus-visible{
+    outline: none;
+  }
 }

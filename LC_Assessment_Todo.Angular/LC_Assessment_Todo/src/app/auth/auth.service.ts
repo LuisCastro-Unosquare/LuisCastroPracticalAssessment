@@ -16,6 +16,16 @@ export class AuthService {
   // private _isLoggedIn: boolean = false;
   public isLoggedIn = signal<boolean>(false);
 
+  /**
+   * Constructor to initialize the service, if token is present in the session, user will be consirered signed in.
+   */
+  constructor() {
+    const token = this.token;
+    if(token)
+    {
+      this.setLoggedIn();
+    }
+  }
   login(login: Login):Observable<Result<AuthToken>> {
     return this.http.post<Result<AuthToken>>(this.serviceUrl + '/login', login)
       .pipe(
@@ -38,17 +48,13 @@ export class AuthService {
   private setLoggedIn():void{
     this.isLoggedIn.update(x => x=true);
   }
-  // get isLoggedIn():boolean{
-  //   return this.isLoggedIn;
-  // }
 
   set token(value:string) {
     sessionStorage.setItem('token', value);
   }
 
   get token() {
-
-    return "" + sessionStorage?.getItem('token');
+    return sessionStorage?.getItem('token')??"";
   }
 
 
