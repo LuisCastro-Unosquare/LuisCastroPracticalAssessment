@@ -2,10 +2,9 @@ import { HttpClient } from "@angular/common/http";
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { Result } from "../models/result.model";
 import { Task } from "../models/task.model";
-import { catchError, map, of, shareReplay, tap } from "rxjs";
+import { catchError, of, shareReplay, tap } from "rxjs";
 import { HttpErrorService } from "./http-error.service";
 import { toSignal } from "@angular/core/rxjs-interop";
-import { Title } from "@angular/platform-browser";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +16,6 @@ export class TaskService {
 
   private tasksResult$ = this.http.get<Result<Task[]>>(this.tasksUrl + '/list')
   .pipe(
-    // map(p => ({ data:p.data} as Result<Task[]>)),
     tap(p => console.log(JSON.stringify(p))),
     shareReplay(1),
     catchError(
@@ -33,13 +31,11 @@ export class TaskService {
   public isSyncing = signal<boolean>(false);
 
   changeTaskStatus(task: Task, checked: any) {
-    console.log("Try to execute put on task:", task);
     task.isDone = checked;
 
     this.setSyncingStateOn();
     this.http.put<Result<Task>>(this.tasksUrl, task)
       .pipe(
-        // map(p => ({ data:p.data} as Result<Task[]>)),
         tap(p => {
           console.log("Update task response: " + JSON.stringify(p));
           this.setSyncingStateOff();
@@ -58,6 +54,4 @@ export class TaskService {
   private setSyncingStateOff(): void {
     this.isSyncing.update(x => x = false);
   }
-
-
 }
