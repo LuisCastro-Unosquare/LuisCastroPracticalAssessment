@@ -19,4 +19,12 @@ export class ChecklistViewComponent{
   onTaskStatusChanged(values:any, task:Task):void{
     this.taskService.changeTaskStatus(task, values.currentTarget.checked);
   }
+
+  onTaskTitleChange(event: any, task: Task) {
+    let currentValue = event.currentTarget.value;
+    let currentTask = {...task};
+    currentTask.title = currentValue;
+    this.taskService.changeTaskTitle(currentTask);
+    event.currentTarget.blur();
+  }
 }

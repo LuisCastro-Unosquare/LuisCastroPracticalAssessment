@@ -7,12 +7,12 @@
 </div>
 <div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center"
   *ngIf="tasks() as tasks">
-  <div class="list-group">
+  <div class="list-group" *ngIf="tasks.length > 0">
     <label class="list-group-item d-flex gap-3" *ngFor='let task of tasks' [ngClass]="{'task-done': (task.isDone)}">
       <input class="form-check-input flex-shrink-0" type="checkbox" value="" [checked]="task.isDone" style="font-size: 1.375em;"
         (change)="onTaskStatusChanged($event, task)">
       <span class="pt-1 form-checked-content task-title">
-        <strong>{{task.title}}</strong>
+        <input type="text" [value]="task.title" class="input-title" [disabled]="task.isDone" (keyup.enter)="onTaskTitleChange($event, task)" (blur)="onTaskTitleChange($event, task)">
         <small class="d-block text-body-secondary">
           <i class="bi bi-calendar-event"></i>
           1:00–2:00pm

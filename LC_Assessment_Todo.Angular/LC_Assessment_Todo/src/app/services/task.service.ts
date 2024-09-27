@@ -30,9 +30,17 @@ export class TaskService {
   public tasksError = computed(()=> this.tasksResult().error);
   public isSyncing = signal<boolean>(false);
 
-  changeTaskStatus(task: Task, checked: any) {
-    task.isDone = checked;
 
+  changeTaskTitle(task: Task) {
+    this.updateTask(task);
+  }
+
+  changeTaskStatus(task: Task, checked: boolean) {
+    task.isDone = checked;
+    this.updateTask(task);
+  }
+
+  private updateTask(task: Task):void {
     this.setSyncingStateOn();
     this.http.put<Result<Task>>(this.tasksUrl, task)
       .pipe(

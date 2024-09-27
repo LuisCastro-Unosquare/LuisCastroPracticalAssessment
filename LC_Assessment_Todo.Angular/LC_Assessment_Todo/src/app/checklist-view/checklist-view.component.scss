@@ -1,6 +1,20 @@
 .task-done {
   .task-title,
-  .text-body-secondary{
+  .text-body-secondary,
+  .input-title{
     color: grey;
+  }
+}
+
+
+.input-title{
+  border: none;
+  font-weight: bold;
+  &:active{
+    border: none;
+    outline: none;
+  }
+  &:disabled{
+    background: #FFF;
   }
 }

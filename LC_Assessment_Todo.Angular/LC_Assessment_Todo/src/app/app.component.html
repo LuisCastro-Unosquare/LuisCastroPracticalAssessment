@@ -1,18 +1,18 @@
 <main class="d-flex flex-nowrap">
   <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;" id="nav">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <a [routerLink]="['/landingpage']" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
       <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-      <span class="fs-4">LC Assessment</span>
+      <span class="fs-4">LC Assessment </span>
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="!isLoggedIn()">
         <a [routerLink]="['/login']" routerLinkActive="active" class="nav-link text-white" aria-current="page">
           <i class="bi bi-door-open-fill"></i>
           Login
         </a>
       </li>
-      <li>
+      <li *ngIf="isLoggedIn()">
         <a [routerLink]="['/landingpage']" routerLinkActive="active" class="nav-link text-white">
           <i class="bi bi-card-checklist"></i>
           Checklist
@@ -20,7 +20,7 @@
       </li>
     </ul>
     <hr>
-    <div class="dropdown">
+    <div class="dropdown" *ngIf="isLoggedIn()">
       <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="bi bi-person-circle user-img"></i>
         <strong>Luis Castro</strong>
