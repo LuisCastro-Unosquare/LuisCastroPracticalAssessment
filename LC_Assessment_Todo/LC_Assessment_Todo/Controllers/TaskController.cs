@@ -34,7 +34,7 @@ namespace LC_Assessment_Todo.Controllers
             var updatedTask = taskService.Update(task);
             if (updatedTask != null)
             {
-                return this.Ok(updatedTask);
+                return this.Ok(new Result<TaskDto>(updatedTask));
             }
             else
             {

@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { TaskService } from '../services/task.service';
 import { CommonModule } from '@angular/common';
+import { Task } from '../models/task.model';
 
 @Component({
   selector: 'app-checklist-view',
@@ -13,4 +14,15 @@ export class ChecklistViewComponent {
   private taskService = inject(TaskService);
 
   tasks = this.taskService.tasks;
+  isSyncing = false;
+
+  onTaskStatusChanged(values:any, task:Task):void{
+    this.taskService.changeTaskStatus(task, values.currentTarget.checked);
+    this.isSyncing = true;
+    // console.log(values.currentTarget.checked + " taskId:" + task.id);
+  }
+
+  // onSelected(productId: number): void {
+  //   this.productService.productSelected(productId);
+  // }
 }

@@ -93,7 +93,7 @@ namespace LC_Assessment_Todo.Services.Implementations
             if (taskEntity == null)
                 return null;
 
-            taskEntity = _mapper.Map<TodoTask>(taskDto);
+            taskEntity = _mapper.Map<TaskDto, TodoTask>(taskDto, taskEntity);
 
             _todoDbContext.Update(taskEntity);
 
