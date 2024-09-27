@@ -14,11 +14,10 @@ export class ChecklistViewComponent {
   private taskService = inject(TaskService);
 
   tasks = this.taskService.tasks;
-  isSyncing = false;
+  isSyncing = this.taskService.isSyncing;
 
   onTaskStatusChanged(values:any, task:Task):void{
     this.taskService.changeTaskStatus(task, values.currentTarget.checked);
-    this.isSyncing = true;
     // console.log(values.currentTarget.checked + " taskId:" + task.id);
   }
 
