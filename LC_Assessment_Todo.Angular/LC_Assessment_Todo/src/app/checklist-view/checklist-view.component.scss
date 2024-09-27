@@ -6,7 +6,6 @@
   }
 }
 
-
 .input-title{
   border: none;
   font-weight: bold;
@@ -20,5 +19,21 @@
   }
   &:focus-visible{
     outline: none;
+  }
+}
+
+.delete-button{
+  position: relative;
+  padding: 16px;
+  right: -10px;
+  cursor: pointer;
+  visibility: hidden;
+  &:hover{
+    color: rgba(220, 53, 69);
+  }
+}
+.list-group-item{
+  &:hover .delete-button{
+    visibility: visible;
   }
 }

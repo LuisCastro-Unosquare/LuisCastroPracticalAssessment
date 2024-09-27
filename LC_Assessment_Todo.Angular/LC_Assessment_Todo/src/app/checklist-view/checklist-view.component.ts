@@ -15,6 +15,7 @@ export class ChecklistViewComponent implements OnInit, OnDestroy{
   private taskService = inject(TaskService);
   newTask:Task = <Task>{title:""};
   createNewTaskSub!: Subscription;
+  deleteTaskSub!: Subscription;
 
   tasks = this.taskService.tasks;
   isSyncing = this.taskService.isSyncing;
@@ -50,7 +51,12 @@ export class ChecklistViewComponent implements OnInit, OnDestroy{
       event.currentTarget.blur();
   }
 
+  onDeleteTask(event: any, task: Task):void{
+    this.deleteTaskSub = this.taskService.deleteTask(task.id).subscribe();
+  }
+
   ngOnDestroy(): void {
     if(this.createNewTaskSub) this.createNewTaskSub.unsubscribe();
+    if(this.deleteTaskSub) this.deleteTaskSub.unsubscribe();
   }
 }

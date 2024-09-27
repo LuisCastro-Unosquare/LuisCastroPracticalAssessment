@@ -8,25 +8,25 @@
 <div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center"
   *ngIf="tasks() as tasks">
   <div class="list-group" *ngIf="tasks.length > 0">
-    <label class="list-group-item d-flex gap-3" *ngFor='let task of tasks' [ngClass]="{'task-done': (task.isDone)}">
+    <div class="list-group-item d-flex gap-3" *ngFor='let task of tasks' [ngClass]="{'task-done': (task.isDone)}">
       <input class="form-check-input flex-shrink-0" type="checkbox" value="" [checked]="task.isDone" style="font-size: 1.375em;"
         (change)="onTaskStatusChanged($event, task)">
       <span class="pt-1 form-checked-content task-title">
         <input type="text" [(value)]="task.title" class="input-title" [disabled]="task.isDone" (keyup.enter)="onTaskTitleChange($event, task)">
-        <!-- <small class="d-block text-body-secondary">
-          <i class="bi bi-calendar-event"></i>
-          1:00–2:00pm
-        </small> -->
+        <small class="delete-button" (click)="onDeleteTask($event, task);$event.stopPropagation()">
+          <i class="bi bi-trash3"></i>
+          Delete
+        </small>
       </span>
-    </label>
+    </div>
     <label class="list-group-item d-flex gap-3 bg-body-tertiary">
       <input class="form-check-input form-check-input-placeholder bg-body-tertiary flex-shrink-0 pe-none" disabled="" type="checkbox" value="" style="font-size: 1.375em;">
       <span class="pt-1 form-checked-content">
         <input type="text" [(value)]="newTask.title" class="input-title" placeholder="Add new task..." (keyup.enter)="onNewTask($event)">
         <!-- <span contenteditable="true" class="w-100">Add new task...</span> -->
         <small class="d-block text-body-secondary">
-          <i class="bi bi-list-check"></i>
-          Enter to sync...
+          <i class="bi bi-save"></i>
+          Press enter to sync...
         </small>
       </span>
     </label>

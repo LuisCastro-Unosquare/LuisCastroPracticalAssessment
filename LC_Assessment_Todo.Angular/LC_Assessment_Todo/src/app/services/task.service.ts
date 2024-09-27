@@ -80,6 +80,21 @@ export class TaskService {
       );
   }
 
+  public deleteTask(taskId: number): Observable<Result<Task>> {
+    this.setSyncingStateOn();
+    return this.http.delete<Result<Task>>(this.tasksUrl + "/" + taskId)
+      .pipe(
+        tap(p => {
+          console.log("Delete task response: " + JSON.stringify(p));
+          this.getAllTasks();
+          this.setSyncingStateOff();
+        }),
+        catchError(
+          err => of(({ data: {}, error:this.errorService.formatError(err) } as Result<Task>))
+        )
+      );
+  }
+
   private setSyncingStateOn(): void {
     this.isSyncing.update(x => x = true);
   }

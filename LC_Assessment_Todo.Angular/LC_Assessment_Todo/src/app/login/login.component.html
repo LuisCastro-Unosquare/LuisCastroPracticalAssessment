@@ -1,31 +1,17 @@
 
-<div class="container-sm">
-  <div class="container text-center">
-    <div class="row">
-      <div class="col">
+<main class="form-signin w-100 m-auto">
+  <form>
+    <i class="bi bi-rocket-takeoff-fill" style="font-size: 72px;"></i>
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-      </div>
-      <div class="col">
-        <form>
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
-          </div>
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-          </div>
-          <button type="submit" class="btn btn-primary" (click)="onLoginSubmit();$event.preventDefault()">Submit</button>
-        </form>
-      </div>
-      <div class="col">
-
-      </div>
+    <div class="form-floating">
+      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <label for="floatingInput">Email address</label>
     </div>
-  </div>
-</div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <label for="floatingPassword">Password</label>
+    </div>
+    <button class="btn btn-primary w-100 py-2" type="submit" (click)="onLoginSubmit();$event.preventDefault()">Sign in</button>
+  </form>
+</main>
