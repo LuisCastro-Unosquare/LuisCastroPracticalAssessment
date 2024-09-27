@@ -27,6 +27,10 @@ export class AuthService {
       );
   }
 
+  logout(){
+    sessionStorage.clear();
+  }
+
   set token(value:string) {
     sessionStorage.setItem('token', value);
   }

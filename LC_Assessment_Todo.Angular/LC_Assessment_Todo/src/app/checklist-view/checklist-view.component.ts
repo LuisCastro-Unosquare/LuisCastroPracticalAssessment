@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { TaskService } from '../services/task.service';
 import { CommonModule } from '@angular/common';
 import { Task } from '../models/task.model';
@@ -10,7 +10,7 @@ import { Task } from '../models/task.model';
   templateUrl: './checklist-view.component.html',
   styleUrl: './checklist-view.component.scss'
 })
-export class ChecklistViewComponent {
+export class ChecklistViewComponent{
   private taskService = inject(TaskService);
 
   tasks = this.taskService.tasks;
@@ -18,10 +18,5 @@ export class ChecklistViewComponent {
 
   onTaskStatusChanged(values:any, task:Task):void{
     this.taskService.changeTaskStatus(task, values.currentTarget.checked);
-    // console.log(values.currentTarget.checked + " taskId:" + task.id);
   }
-
-  // onSelected(productId: number): void {
-  //   this.productService.productSelected(productId);
-  // }
 }

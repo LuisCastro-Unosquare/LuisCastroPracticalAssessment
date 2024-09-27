@@ -1,6 +1,6 @@
 <h2>TODO List <i class="bi bi-check2-all"></i></h2>
 <div>
-  Estado:
+  Sync state:
   <div *ngIf="isSyncing();then syncing else no_syncing"></div>
   <ng-template #syncing><i class="bi bi-cloud-arrow-up-fill"></i> Syncing</ng-template>
   <ng-template #no_syncing><i class="bi bi-cloud-check-fill"></i> Synchronized</ng-template>
